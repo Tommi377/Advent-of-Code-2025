@@ -3,7 +3,7 @@ use std::fs;
 fn main() {
     let input = fs::read_to_string("data/input/05").expect("File not found");
     println!("{}", part1(&input));
-    // println!("{}", part2(&input));
+    println!("{}", part2(&input));
 }
 
 fn part1(input: &str) -> u64 {
@@ -35,7 +35,41 @@ fn part1(input: &str) -> u64 {
 }
 
 fn part2(input: &str) -> u64 {
-    todo!()
+    let mut starts: Vec<u64> = Vec::new();
+    let mut ends: Vec<u64> = Vec::new();
+
+    input
+        .lines()
+        .take_while(|line| !line.is_empty())
+        .for_each(|str| {
+            match str.split_once('-') {
+                Some((left, right)) => (
+                    starts.push(left.parse::<u64>().expect("Invalid number")),
+                    ends.push(right.parse::<u64>().expect("Invalid number")),
+                ),
+                _ => panic!("Invalid format: {}", str),
+            };
+        });
+
+    let mut result: u64 = 0;
+    let mut i: usize = 0;
+    let mut j: usize = 0;
+
+    starts.sort_unstable();
+    ends.sort_unstable();
+
+    while i < starts.len() && j < ends.len() {
+        let mut next_i = i + 1;
+        while next_i < starts.len() && j + 1 < ends.len() && starts[next_i] <= ends[j] {
+            next_i += 1;
+            j += 1;
+        }
+
+        result += ends[j] - starts[i] + 1;
+        i = next_i;
+        j += 1;
+    }
+    result
 }
 
 #[cfg(test)]
@@ -62,6 +96,6 @@ mod test_day5 {
 
     #[test]
     fn test_part2_input() {
-        assert_eq!(part2(INPUT), 8713);
+        assert_eq!(part2(INPUT), 354143734113772);
     }
 }
