@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let input = fs::read_to_string("data/input/04").expect("File not found");
+    let input = fs::read_to_string("data/example/04").expect("File not found");
     println!("{}", part1(&input));
     println!("{}", part2(&input));
 }
@@ -15,7 +15,7 @@ fn part1(input: &str) -> u32 {
 
     input
         .chars()
-        .filter(|c| *c != '\n')
+        .filter(|c| *c == '.' || *c == '@')
         .enumerate()
         .for_each(|(idx, c)| {
             if c == '@' {
@@ -35,7 +35,7 @@ fn part1(input: &str) -> u32 {
 
     input
         .chars()
-        .filter(|c| *c != '\n')
+        .filter(|c| *c == '.' || *c == '@')
         .enumerate()
         .filter(|(idx, c)| *c == '@' && neighbors[*idx] < 4)
         .count() as u32
@@ -50,7 +50,7 @@ fn part2(input: &str) -> u32 {
 
     input
         .chars()
-        .filter(|c| *c != '\n')
+        .filter(|c| *c == '.' || *c == '@')
         .enumerate()
         .for_each(|(idx, c)| {
             if c == '@' {

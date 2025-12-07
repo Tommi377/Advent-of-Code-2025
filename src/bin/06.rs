@@ -93,7 +93,6 @@ fn part2(input: &str) -> u64 {
                     num += (char_byte - b'0') as u64;
                 }
             }
-            let i = lengths.iter().position(|&l| l == *length).unwrap();
             if ops[op_i] == '+' {
                 accumulated[op_i] += num;
             } else {
