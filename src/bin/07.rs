@@ -1,4 +1,7 @@
-use std::{collections::HashSet, fs};
+use std::{
+    collections::{HashMap, HashSet},
+    fs,
+};
 
 fn main() {
     let input = fs::read_to_string("data/input/07").expect("File not found");
@@ -49,28 +52,31 @@ fn part2(input: &str) -> u64 {
         .chars()
         .position(|c| c == 'S')
         .unwrap();
-    let mut streams = vec![start_i];
+    let mut streams = HashMap::new();
+    streams.insert(start_i, 1u64);
 
-    input.lines().enumerate().for_each(|(ln, line)| {
-        println!("Line {} ({}): {}", ln, streams.len(), line);
+    input.lines().for_each(|line| {
         let line_buf = line.chars().collect::<Vec<char>>();
-        let mut new_stream = Vec::new();
-        for i in &streams {
-            if line_buf[*i] == '^' {
-                if *i > 0 {
-                    new_stream.push(*i - 1);
+        for (i, count) in streams.clone() {
+            if line_buf[i] == '^' {
+                if i > 0 {
+                    streams
+                        .entry(i - 1)
+                        .and_modify(|c| *c += count)
+                        .or_insert(count);
                 }
-                if *i < line_buf.len() - 1 {
-                    new_stream.push(*i + 1);
+                if i < line_buf.len() - 1 {
+                    streams
+                        .entry(i + 1)
+                        .and_modify(|c| *c += count)
+                        .or_insert(count);
                 }
-            } else {
-                new_stream.push(*i);
+                streams.remove(&i);
             }
         }
-        streams = new_stream;
     });
 
-    streams.len() as u64
+    streams.values().sum()
 }
 
 #[cfg(test)]
@@ -97,6 +103,6 @@ mod test_day7 {
 
     #[test]
     fn test_part2_input() {
-        assert_eq!(part2(INPUT), 7996218225744);
+        assert_eq!(part2(INPUT), 422102272495018);
     }
 }
