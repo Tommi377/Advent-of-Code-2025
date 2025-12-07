@@ -106,7 +106,7 @@ fn part2(input: &str) -> u64 {
 }
 
 #[cfg(test)]
-mod test_day5 {
+mod test_day6 {
     use super::*;
 
     const EXAMPLE_INPUT: &str = include_str!("../../data/example/06");
