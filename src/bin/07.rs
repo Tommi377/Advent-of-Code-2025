@@ -5,7 +5,7 @@ use std::{
 
 fn main() {
     let input = fs::read_to_string("data/input/07").expect("File not found");
-    // println!("{}", part1(&input));
+    println!("{}", part1(&input));
     println!("{}", part2(&input));
 }
 
